@@ -6,6 +6,7 @@ const connectDB = require('./config/db');
 
 const authRoutes = require('./routes/authRoute');
 const dashboardRoutes = require('./routes/dashboardRoute');
+const communityRoutes = require('./routes/communityRoute');
 
 const app = express();
 connectDB();
@@ -17,6 +18,7 @@ app.use(cors({ origin: 'http://localhost:3001', credentials: true }));
 // Routes
 app.use('/auth', authRoutes);
 app.use('/dashboard', dashboardRoutes);
+app.use('/communities', communityRoutes);
 
 // Global error handler (simple)
 app.use((err, req, res, next) => {
