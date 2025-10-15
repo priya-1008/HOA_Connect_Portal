@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const bcrypt = require("bcryptjs");
 
 // Get all residents for the logged-in admin’s community
 exports.getResidents = async (req, res) => {
@@ -23,6 +24,8 @@ exports.addResident = async (req, res) => {
   try {
     const { name, email, password, phoneNo, houseNumber } = req.body;
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     if (!req.user?.communityId) {
       return res.status(400).json({ message: "Community not found in user" });
     }
@@ -30,7 +33,7 @@ exports.addResident = async (req, res) => {
     const newResident = await User.create({
       name,
       email,
-      password,
+      password: hashedPassword,
       phoneNo,
       houseNumber,
       role: "resident",

@@ -12,6 +12,7 @@ const reportRoutes = require('./routes/reportRoute');
 const notificationRoutes = require('./routes/notificationRoute');
 const announcementRoutes = require('./routes/announcementRoute');
 const adminRoutes = require('./routes/adminRoute');
+const complaintRoutes = require('./routes/complaintRoute');
 
 const app = express();
 connectDB();
@@ -30,6 +31,7 @@ app.use('/reports', reportRoutes);
 app.use('/notifications', notificationRoutes);
 app.use('/announcements', announcementRoutes);
 app.use('/admin', adminRoutes);
+app.use('/complaints', complaintRoutes);
 
 
 // Global error handler (simple)

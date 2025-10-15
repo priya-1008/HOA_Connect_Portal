@@ -7,7 +7,7 @@ const router = express.Router();
 router.use(protect); // all routes below need authentication
 
 router.get("/getresidents", authorizeRoles("admin"), getResidents);
-router.post("/addresidents", authorizeRoles("admin"), addResident);
+router.post("/addresident", authorizeRoles("admin"), addResident);
 router.put("/updateresidents/:id", authorizeRoles("admin"), updateResident);
 router.delete("/deleteresidents/:id", authorizeRoles("admin"), deleteResident);
 

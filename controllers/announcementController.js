@@ -36,3 +36,14 @@ exports.getAnnouncements = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+exports.getAnnouncementsByCommunity = async (req, res) => {
+  try {
+    const { communityId } = req.params;
+    const announcements = await Announcement.find({ communityId: communityId })
+      .sort({ createdAt: -1 });
+    res.status(200).json(announcements);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

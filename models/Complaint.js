@@ -5,12 +5,14 @@ const ComplaintSchema = new mongoose.Schema({
   description: { type: String, required: true, maxlength: 500 },
   status: {
     type: String,
-    enum: ['pending', 'in-progress', 'resolved'],
-    default: 'pending'   
+    enum: ['Pending', 'In Progress', 'Resolved'],
+    default: 'Pending'   
   },  
-  communityId: { type: mongoose.Schema.Types.ObjectId, required: "Community" }, // Links to Community.communityId
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Resident who filed the complaint
-}, { timestamps: true }
+  communityId: { type: mongoose.Schema.Types.ObjectId, ref: "Community" }, // Links to Community.communityId
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  createdAt: { type: Date, default: Date.now},
+  updatedAt: { type: Date },
+}, 
 );
 
 module.exports = mongoose.model('Complaint', ComplaintSchema);

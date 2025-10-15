@@ -8,17 +8,33 @@ exports.register = async (req,res) => {
   try{
     const { name, email, password, role, phoneNo, houseNumber, communityId} = req.body;
     const requester = req.user;
-
+    
+    //Validate Role
     if(!role || ![ROLES.ADMIN, ROLES.RESIDENT].includes(role)) {
       return res.status(400).json({ message: 'Invalid or missing role. Only admin or resident allowed' });
     }
     //Only SuperAdmin creates an Admin
-    if (role === ROLES.ADMIN && requester.role !== ROLES.SUPERADMIN) {
-      return res.status(403).json({ message: 'Only SuperAdmin can create Admins' });
+    // if (role === ROLES.ADMIN && requester.role !== ROLES.SUPERADMIN) {
+    //   return res.status(403).json({ message: 'Only SuperAdmin can create Admins' });
+    // }
+    if (role === ROLES.ADMIN) {
+      if (requester.role !== ROLES.SUPERADMIN) {
+        return res.status(403).json({ message: "Only SuperAdmin can create Admins." });
+      }
     }
     //Only Admin creates Resident
-    if (role === ROLES.ADMIN && requester.role !== ROLES.SUPERADMIN) {
-      return res.status(403).json({ message: 'Only SuperAdmin can create Admins' });
+    // if (role === ROLES.ADMIN && requester.role !== ROLES.SUPERADMIN) {
+    //   return res.status(403).json({ message: 'Only SuperAdmin can create Admins' });
+    // }
+    if (role === ROLES.RESIDENT) {
+      if (requester.role !== ROLES.ADMIN) {
+        return res.status(403).json({ message: "Only Admin can create Residents." });
+      }
+
+      // Resident should automatically get admin’s community
+      if (!requester.communityId) {
+        return res.status(400).json({ message: "Admin is not assigned to any community." });
+      }
     }
 
     //Duplicate email checking
@@ -30,9 +46,12 @@ exports.register = async (req,res) => {
     if (!community) return res.status(400).json({ message: 'Community not found' });
 
     const hashedPassword = await bcrypt.hash(password, 10);
+    if (!req.user?.communityId) {
+      return res.status(400).json({ message: "Community not found in user" });
+    }
 
     const user = new User({
-      name, email, password: hashedPassword, role, phoneNo, houseNumber, communityId
+      name, email, password: hashedPassword, role, phoneNo, houseNumber, communityId: req.user.communityId
     });
 
     await user.save();
