@@ -73,3 +73,21 @@ exports.login = async (req, res) => {
     res.status(500).json({ message: 'Login error', error: error.message });
   }
 }
+
+// Get all HOA Admins (users with role = "admin")
+exports.getAllAdmins = async (req, res) => {
+  try {
+    const admins = await User.find({ role: "admin" })
+      .populate("communityId") // optional if you want to include community details
+      .select("-password"); // exclude password field for security
+
+    if (!admins || admins.length === 0) {
+      return res.status(404).json({ message: "No admins found" });
+    }
+
+    res.status(200).json(admins);
+  } catch (error) {
+    console.error("Error fetching admins:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
