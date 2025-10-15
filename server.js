@@ -7,6 +7,11 @@ const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoute');
 const dashboardRoutes = require('./routes/dashboardRoute');
 const communityRoutes = require('./routes/communityRoute');
+const paymentRoutes = require('./routes/paymentRoute');
+const reportRoutes = require('./routes/reportRoute');
+const notificationRoutes = require('./routes/notificationRoute');
+const announcementRoutes = require('./routes/announcementRoute');
+const adminRoutes = require('./routes/adminRoute');
 
 const app = express();
 connectDB();
@@ -20,6 +25,12 @@ app.use(cors());
 app.use('/auth', authRoutes);
 app.use('/dashboard', dashboardRoutes);
 app.use('/communities', communityRoutes);
+app.use('/payments', paymentRoutes);
+app.use('/reports', reportRoutes);
+app.use('/notifications', notificationRoutes);
+app.use('/announcements', announcementRoutes);
+app.use('/admin', adminRoutes);
+
 
 // Global error handler (simple)
 app.use((err, req, res, next) => {

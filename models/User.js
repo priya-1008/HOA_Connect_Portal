@@ -11,7 +11,7 @@ const UserSchema = new mongoose.Schema({
   },
   phoneNo: { type: String },
   houseNumber: { type: String },
-  communityId: { type: mongoose.Schema.Types.ObjectId, ref: "Community" }, // Links to Community.communityId
+  communityId: { type: mongoose.Schema.Types.ObjectId, ref: 'Community', default: null }, // Links to Community.communityId
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });

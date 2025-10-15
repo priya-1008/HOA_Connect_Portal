@@ -1,16 +1,23 @@
 const mongoose = require('mongoose');
+const { v4: uuidv4 } = require('uuid');
 
 const PaymentSchema = new mongoose.Schema({
+  transactionId: {
+    type: String,
+    unique: true,
+    default: () => uuidv4(), // automatically generate a UUID
+  },
   amount: { type: Number, required: true },
-  paymentDate: { type: Date, default: Date.now },
+  method: { type: String, enum: ['Credit card', 'Debit Card', 'UPI', 'Cash'], required: true },
+  transactionDate: { type: Date, default: Date.now },
   status: {
     type: String,
     enum: ['pending', 'completed', 'failed'],
     default: 'pending'
   },
   transactionId: { type: String, maxlength: 100 },
-  communityId: { type: mongoose.Schema.Types.ObjectId, required: "Community" }, // Links to Community.communityId
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Resident who made the payment
+  communityId: { type: mongoose.Schema.Types.ObjectId, ref: "Community", required: true }, 
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, 
 }, { timestamps: { createdAt: true, updatedAt: false } }
 );
 

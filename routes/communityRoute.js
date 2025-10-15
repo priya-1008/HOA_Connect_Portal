@@ -19,6 +19,6 @@ router.put("/updateCommunity/:id", authorizeRoles("superadmin"), updateCommunity
 router.delete("/deleteCommunity/:id", authorizeRoles("superadmin"), deleteCommunity);
   
 router.post("/assign-admin", authorizeRoles("superadmin"), assignAdmin);
-router.post("/remove-admin", authorizeRoles("superadmin"), removeAdmin);
+router.post("/removeAdmin", authorizeRoles("superadmin"), removeAdmin);
 
 module.exports = router;
