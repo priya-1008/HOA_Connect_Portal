@@ -13,7 +13,8 @@ connectDB();
 
 app.use(express.json());
 // allow frontend origin (Vite default is 5173). Adjust if you use CRA (3000)
-app.use(cors({ origin: 'http://localhost:3001', credentials: true }));
+// app.use(cors({ origin: 'http://localhost:3001', credentials: true }));
+app.use(cors());
 
 // Routes
 app.use('/auth', authRoutes);
@@ -26,5 +27,5 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: 'Server error', error: err.message });
 });
 
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

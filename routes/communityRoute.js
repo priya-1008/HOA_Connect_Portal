@@ -13,10 +13,10 @@ const { protect, authorizeRoles } = require("../middleware/authMiddleware");
 
 router.use(protect); // all routes below need authentication
 
-router.post("/", authorizeRoles("superadmin"), createCommunity);
-router.get("/", authorizeRoles("superadmin"), getAllCommunities);
-router.put("/:id", authorizeRoles("superadmin"), updateCommunity);
-router.delete("/:id", authorizeRoles("superadmin"), deleteCommunity);
+router.post("/addCommunity", authorizeRoles("superadmin"), createCommunity);
+router.get("/getCommunity", authorizeRoles("superadmin"), getAllCommunities);
+router.put("/updateCommunity/:id", authorizeRoles("superadmin"), updateCommunity);
+router.delete("/deleteCommunity/:id", authorizeRoles("superadmin"), deleteCommunity);
   
 router.post("/assign-admin", authorizeRoles("superadmin"), assignAdmin);
 router.post("/remove-admin", authorizeRoles("superadmin"), removeAdmin);
