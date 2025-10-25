@@ -15,9 +15,8 @@ const PaymentSchema = new mongoose.Schema({
     enum: ['pending', 'completed', 'failed'],
     default: 'pending'
   },
-  transactionId: { type: String, maxlength: 100 },
-  communityId: { type: mongoose.Schema.Types.ObjectId, ref: "Community", required: true }, 
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, 
+  community: { type: mongoose.Schema.Types.ObjectId, ref: "Community", required: true }, 
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, 
 }, { timestamps: { createdAt: true, updatedAt: false } }
 );
 

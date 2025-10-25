@@ -8,10 +8,10 @@ const ComplaintSchema = new mongoose.Schema({
     enum: ['Pending', 'In Progress', 'Resolved'],
     default: 'Pending'   
   },  
-  communityId: { type: mongoose.Schema.Types.ObjectId, ref: "Community" }, // Links to Community.communityId
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  community: { type: mongoose.Schema.Types.ObjectId, ref: "Community" }, // Links to Community.communityId
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   createdAt: { type: Date, default: Date.now},
-  updatedAt: { type: Date },
+  updatedAt: { type: Date, default: Date.now}
 }, 
 );
 
