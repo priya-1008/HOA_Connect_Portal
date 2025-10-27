@@ -3,12 +3,15 @@ const Amenity = require('../models/Amenity');
 // ---------------- CREATE AMENITY ----------------
 exports.createAmenity = async (req, res) => {
     try {
-        const { name, description, isActive } = req.body;
+        const { name, description, isActive, community } = req.body;
+        if (!community) {
+            return res.status(400).json({ message: 'Community ID is required' });
+        }
 
-        const existing = await Amenity.findOne({ name });
-        if (existing) return res.status(400).json({ message: 'Amenity already exists' });
+        const existing = await Amenity.findOne({ name, community });
+        if (existing) return res.status(400).json({ message: 'Amenity already exists in this community' });
 
-        const amenity = new Amenity({ name, description, isActive });
+        const amenity = new Amenity({ name, description, isActive, community });
         await amenity.save();
 
         res.status(201).json({ message: 'Amenity created', amenity });
@@ -21,7 +24,7 @@ exports.createAmenity = async (req, res) => {
 // ---------------- GET ALL AMENITIES ----------------
 exports.getAllAmenities = async (req, res) => {
     try {
-        const amenities = await Amenity.find();
+        const amenities = await Amenity.find().populate('community', 'name');
         res.status(200).json({ amenities });
     } catch (err) {
         console.error(err);
@@ -33,12 +36,12 @@ exports.getAllAmenities = async (req, res) => {
 exports.updateAmenity = async (req, res) => {
     try {
         const { amenityId } = req.params;
-        const { name, description, isActive } = req.body;
+        const { name, description, isActive, community, maintenanceStatus } = req.body;
 
         const amenity = await Amenity.findByIdAndUpdate(
             amenityId,
-            { name, description, isActive },
-            { new: true }
+            { name, description, isActive, community, maintenanceStatus },
+            { new: true, runValidators: true }
         );
 
         if (!amenity) return res.status(404).json({ message: 'Amenity not found' });
